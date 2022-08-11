@@ -6,5 +6,6 @@
   "maxDepth": 2,
   "timeoutSeconds": 1,
   "popularWordCount": 5,
+  "profileOutputPath": "profileData_seq.txt",
   "resultPath": "result_seq.json"
 }
