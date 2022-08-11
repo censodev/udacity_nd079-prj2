@@ -25,14 +25,23 @@ Q2. Your manager ran your crawler on her old personal computer, using the config
 Q3. Analyze your method profiler through the lens of Aspect Oriented Programming, by answering the following questions:
 
     (a) What cross-cutting concern is being addressed by the com.udacity.webcrawler.profiler.Profiler class?
+    - measure the execution time of methods invoking and write metrics to files
 
     (b) What are the join points of the Profiler in the web crawler program?
+    - method executions
 
 
 Q4. Identify three (3) different design patterns used in this project, and explain which interfaces, classes, and/or
     libraries use or implement those design patterns.
 
+    - Abstract Factory: PageParserFactory
+    - Builder: CrawlerConfiguration.Builder
+    - Dependency Injection: use Guice framework to implement
+
     For each pattern, name one thing about the pattern that you LIKED, and one thing you DISLIKED. If you did not like
     anything, you can name two things you disliked.
+
+    - I like Dependency Injection
+    - I don't like Abstract Factory
 
 
