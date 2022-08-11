@@ -2,3 +2,11 @@ Run at Thu, 11 Aug 2022 06:09:54 GMT
 com.udacity.webcrawler.SequentialWebCrawler#crawl took 0m 2s 33ms
 com.udacity.webcrawler.parser.PageParserImpl#parse took 0m 2s 19ms
 
+Run at Thu, 11 Aug 2022 09:34:47 GMT
+com.udacity.webcrawler.SequentialWebCrawler#crawl took 0m 3s 75ms
+com.udacity.webcrawler.parser.PageParserImpl#parse took 0m 3s 48ms
+
+Run at Thu, 11 Aug 2022 09:36:40 GMT
+com.udacity.webcrawler.SequentialWebCrawler#crawl took 0m 2s 52ms
+com.udacity.webcrawler.parser.PageParserImpl#parse took 0m 2s 40ms
+

@@ -10,38 +10,38 @@ Q1. Run the web crawler using the configurations located at src/main/config/writ
     the ParallelWebCrawler.
 
     Why did the parser take more time when run with ParallelWebCrawler?
-
+    -> at the same duration, ParallelWebCrawler crawled 16 urls, on the other hand, SequentialWebCrawler just only crawled 2 ones, and the parser time is aggregated
 
 Q2. Your manager ran your crawler on her old personal computer, using the configurations from Q1, and she notices that
     the sequential crawler actually outperforms the parallel crawler. She would like to know why.
 
     (a) Suggest one reason why the sequential web crawler was able to read more web pages than the parallel crawler.
         (Hint: Try setting "parallelism" to 1 in the JSON configs to simulate your manager's computer.)
+    -> running parallel mode with single thread is not much different from running in sequential mode
 
     (b) Suggest one scenario in which the parallel web crawler will almost certainly perform better than the sequential
         crawler. Why will it perform better?
-
+    -> crawling seperated data which are not depend on each other rather than recursive aggregating data like words counting
+    -> because when crawling recursive aggregating data, the parent task depends on the result of child tasks. It's not completely parallelism
 
 Q3. Analyze your method profiler through the lens of Aspect Oriented Programming, by answering the following questions:
 
     (a) What cross-cutting concern is being addressed by the com.udacity.webcrawler.profiler.Profiler class?
-    - measure the execution time of methods invoking and write metrics to files
+    -> measure the execution time of methods invoking and write metrics to files
 
     (b) What are the join points of the Profiler in the web crawler program?
-    - method executions
+    -> method executions
 
 
 Q4. Identify three (3) different design patterns used in this project, and explain which interfaces, classes, and/or
     libraries use or implement those design patterns.
-
-    - Abstract Factory: PageParserFactory
-    - Builder: CrawlerConfiguration.Builder
-    - Dependency Injection: use Guice framework to implement
+    -> Abstract Factory: PageParserFactory
+    -> Builder: CrawlerConfiguration.Builder
+    -> Dependency Injection: use Guice framework to implement
 
     For each pattern, name one thing about the pattern that you LIKED, and one thing you DISLIKED. If you did not like
     anything, you can name two things you disliked.
-
-    - I like Dependency Injection
-    - I don't like Abstract Factory
+    -> I like Dependency Injection
+    -> I don't like Abstract Factory
 
 
