@@ -114,26 +114,26 @@ final class ParallelWebCrawler implements WebCrawler {
       if (maxDepth == 0 || clock.instant().isAfter(deadline)) {
         return;
       }
-      for (Pattern pattern : ignoredUrls) {
-        if (pattern.matcher(url).matches()) {
-          return;
-        }
+      if (ignoredUrls.stream().anyMatch(pattern -> pattern.matcher(url).matches())) {
+        return;
       }
       if (visitedUrls.contains(url)) {
         return;
       }
       visitedUrls.add(url);
       PageParser.Result result = parserFactory.get(url).parse();
-      for (Map.Entry<String, Integer> e : result.getWordCounts().entrySet()) {
-        if (counts.containsKey(e.getKey())) {
-          counts.put(e.getKey(), e.getValue() + counts.get(e.getKey()));
+      result.getWordCounts().forEach((key, value) -> {
+        if (counts.containsKey(key)) {
+          counts.put(key, value + counts.get(key));
         } else {
-          counts.put(e.getKey(), e.getValue());
+          counts.put(key, value);
         }
-      }
-      for (String link : result.getLinks()) {
-        invokeAll(new CrawlTask(clock, link, deadline, maxDepth - 1, counts, visitedUrls, parserFactory, ignoredUrls));
-      }
+      });
+      var tasks = result.getLinks()
+              .stream()
+              .map(link -> new CrawlTask(clock, link, deadline, maxDepth - 1, counts, visitedUrls, parserFactory, ignoredUrls))
+              .collect(Collectors.toList());
+      invokeAll(tasks);
     }
   }
 }
