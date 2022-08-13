@@ -1,4 +1,5 @@
 .idea/
 target/
 *.iml
-profileData.txt
+profileData*.txt
+result*.json
