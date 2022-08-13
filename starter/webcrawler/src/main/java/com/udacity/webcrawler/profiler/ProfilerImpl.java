@@ -48,7 +48,10 @@ final class ProfilerImpl implements Profiler {
 
   @Override
   public void writeData(Path path) {
-    try (var writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+    var mode = Files.exists(path)
+            ? StandardOpenOption.APPEND
+            : StandardOpenOption.CREATE;
+    try (var writer = Files.newBufferedWriter(path, mode)) {
       writeData(writer);
     } catch (IOException e) {
       throw new RuntimeException(e);

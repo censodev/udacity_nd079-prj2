@@ -17,12 +17,12 @@ Q2. Your manager ran your crawler on her old personal computer, using the config
 
     (a) Suggest one reason why the sequential web crawler was able to read more web pages than the parallel crawler.
         (Hint: Try setting "parallelism" to 1 in the JSON configs to simulate your manager's computer.)
-    -> running parallel mode with single thread is not much different from running in sequential mode
+    -> maybe the old computer does not have multi-core CPU
 
     (b) Suggest one scenario in which the parallel web crawler will almost certainly perform better than the sequential
         crawler. Why will it perform better?
-    -> crawling seperated data which are not depend on each other rather than recursive aggregating data like words counting
-    -> because when crawling recursive aggregating data, the parent task depends on the result of child tasks. It's not completely parallelism
+    -> equip a multi-core CPU to the computer, because a multi-core CPU can execute multi tasks in parallel,
+       so that, the parallel web crawler can parse multi web pages with the same timeout
 
 Q3. Analyze your method profiler through the lens of Aspect Oriented Programming, by answering the following questions:
 
@@ -41,7 +41,15 @@ Q4. Identify three (3) different design patterns used in this project, and expla
 
     For each pattern, name one thing about the pattern that you LIKED, and one thing you DISLIKED. If you did not like
     anything, you can name two things you disliked.
-    -> I like Dependency Injection
-    -> I don't like Abstract Factory
+    -> Abstract Factory:
+        -> LIKED: I don't need to change the old code when applying a new page parser type
+        -> DISLIKED: make code is more complicated for everyone can read
+    -> Builder:
+        -> LIKED: very useful to create an object in functional programming looks clean. No need to create a variable, call the setters and return
+        -> DISLIKED: it takes me time to create the builder boilerplate
+    -> Dependency Injection:
+        -> LIKED: loosely coupled. I feel the code is more flexible when changing the behaviour of system without any incompatibility.
+                  For example, I can switch to run the system in many env like dev, test, prod easily
+        -> DISLIKED: very hard to implement an IoC container from scratch. I still need supporting from DI frameworks
 
 

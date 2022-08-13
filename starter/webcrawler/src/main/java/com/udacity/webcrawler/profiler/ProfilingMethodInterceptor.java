@@ -25,12 +25,14 @@ final class ProfilingMethodInterceptor implements InvocationHandler {
   }
 
   @Override
-  public Object invoke(Object proxy, Method method, Object[] args) {
+  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     Instant start = Instant.now(clock);
     try {
       return method.invoke(delegate, args);
-    } catch (IllegalAccessException | InvocationTargetException e) {
-      throw new RuntimeException("expected exception");
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      throw e.getTargetException();
     } finally {
       if (method.isAnnotationPresent(Profiled.class)) {
         var end = Instant.now(clock);

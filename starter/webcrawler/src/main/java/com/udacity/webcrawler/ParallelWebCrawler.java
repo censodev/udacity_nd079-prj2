@@ -5,20 +5,16 @@ import com.udacity.webcrawler.parser.PageParser;
 import com.udacity.webcrawler.parser.PageParserFactory;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.RecursiveTask;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -57,7 +53,7 @@ final class ParallelWebCrawler implements WebCrawler {
   public CrawlResult crawl(List<String> startingUrls) {
     Instant deadline = clock.instant().plus(timeout);
     Map<String, Integer> counts = new HashMap<>();
-    Set<String> visitedUrls = new HashSet<>();
+      ConcurrentSkipListSet<String> visitedUrls = new ConcurrentSkipListSet<>();
 
     for (String startingUrl : startingUrls) {
       pool.invoke(new CrawlTask(clock, startingUrl, deadline, maxDepth, counts, visitedUrls, parserFactory, ignoredUrls));
@@ -87,7 +83,7 @@ final class ParallelWebCrawler implements WebCrawler {
     private final Instant deadline;
     private final int maxDepth;
     private final Map<String, Integer> counts;
-    private final Set<String> visitedUrls;
+    private final ConcurrentSkipListSet<String> visitedUrls;
     private final PageParserFactory parserFactory;
     private final List<Pattern> ignoredUrls;
 
@@ -96,7 +92,7 @@ final class ParallelWebCrawler implements WebCrawler {
               Instant deadline,
               int maxDepth,
               Map<String, Integer> counts,
-              Set<String> visitedUrls,
+              ConcurrentSkipListSet<String> visitedUrls,
               PageParserFactory parserFactory,
               List<Pattern> ignoredUrls) {
       this.clock = clock;
@@ -117,10 +113,9 @@ final class ParallelWebCrawler implements WebCrawler {
       if (ignoredUrls.stream().anyMatch(pattern -> pattern.matcher(url).matches())) {
         return;
       }
-      if (visitedUrls.contains(url)) {
+      if (!visitedUrls.add(url)) {
         return;
       }
-      visitedUrls.add(url);
       PageParser.Result result = parserFactory.get(url).parse();
       result.getWordCounts().forEach((key, value) -> {
         if (counts.containsKey(key)) {
